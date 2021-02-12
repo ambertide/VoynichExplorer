@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="https://cdn.rawgit.com/Chalarangelo/mini.css/v3.0.1/dist/mini-default.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta charset="UTF-8">
+    <script src="../scripts/main.js"></script> 
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -23,7 +24,14 @@
     <div class="row content">
         <div class="col-sm-12 col-md-4 col-md-last col-lg-4 voynich_transliteration">
             <div class="card fluid transliteration">
-                <div class="section title"><h2>f65v</h2></div>
+                <div class="section title"><h2 class="folio-name-text">f65v</h2>
+                    <div class="custom-select">
+                        <select onchange="changeVoynichFont(this.value);">
+                          <option value="0">Voynichese</option>
+                          <option value="1">Transliterated EVA</option>
+                        </select>
+                      </div>
+                </div>
                 <div class="section folio" id=><sup>1</sup><a class="voynich-word" href="../word/cphy.html">cphy</a> <a class="voynich-word" href="../word/fchecfhy.html">fchecfhy</a> <a class="voynich-word" href="../word/dydchepain.html">dydchepain</a> <a class="voynich-word" href="../word/shety.html">shety</a> <a class="voynich-word" href="../word/qopy.html">qopy</a> <a class="voynich-word" href="../word/fol.html">fol</a> <a class="voynich-word" href="../word/chpdy.html">chpdy</a></br><sup>2</sup><a class="voynich-word" href="../word/daiin.html">daiin</a> <a class="voynich-word" href="../word/sheek.html">sheek</a> <a class="voynich-word" href="../word/l.html">l</a> <a class="voynich-word" href="../word/odyyteo.html">odyyteo</a> <a class="voynich-word" href="../word/qop*.html">qop*</a> <a class="voynich-word" href="../word/air.html">air</a> <a class="voynich-word" href="../word/cheoteey.html">cheoteey</a> <a class="voynich-word" href="../word/dalam.html">dalam</a></br><sup>3</sup><a class="voynich-word" href="../word/ytal.html">ytal</a> <a class="voynich-word" href="../word/cheot.html">cheot</a> <a class="voynich-word" href="../word/shky.html">shky</a> <a class="voynich-word" href="../word/yeas.html">yeas</a> <a class="voynich-word" href="../word/cheody.html">cheody</a></br><sup>4</sup><a class="voynich-word" href="../word/toeedy.html">toeedy</a> <a class="voynich-word" href="../word/otor.html">otor</a> <a class="voynich-word" href="../word/shedyyteey.html">shedyyteey</a> <a class="voynich-word" href="../word/sheody.html">sheody</a> <a class="voynich-word" href="../word/qokesd.html">qokesd</a> <a class="voynich-word" href="../word/yfchey.html">yfchey</a></br><sup>5</sup><a class="voynich-word" href="../word/dshedy.html">dshedy</a> <a class="voynich-word" href="../word/okeody.html">okeody</a> <a class="voynich-word" href="../word/qokdshckhy.html">qokdshckhy</a> <a class="voynich-word" href="../word/choky.html">choky</a> <a class="voynich-word" href="../word/chokeody.html">chokeody</a> <a class="voynich-word" href="../word/okey.html">okey</a> <a class="voynich-word" href="../word/dy.html">dy</a></br><sup>6</sup><a class="voynich-word" href="../word/qo.html">qo</a> <a class="voynich-word" href="../word/ytchey.html">ytchey</a> <a class="voynich-word" href="../word/shckhh.html">shckhh</a> <a class="voynich-word" href="../word/cphyykchhdy.html">cphyykchhdy</a> <a class="voynich-word" href="../word/chedy.html">chedy</a> <a class="voynich-word" href="../word/shckhdy.html">shckhdy</a></br></div>
                 <div class="section navigation">
                     <div class="folio-navigation">

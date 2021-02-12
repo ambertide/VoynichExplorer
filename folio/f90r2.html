@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="https://cdn.rawgit.com/Chalarangelo/mini.css/v3.0.1/dist/mini-default.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta charset="UTF-8">
+    <script src="../scripts/main.js"></script> 
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -23,7 +24,14 @@
     <div class="row content">
         <div class="col-sm-12 col-md-4 col-md-last col-lg-4 voynich_transliteration">
             <div class="card fluid transliteration">
-                <div class="section title"><h2>f90r2</h2></div>
+                <div class="section title"><h2 class="folio-name-text">f90r2</h2>
+                    <div class="custom-select">
+                        <select onchange="changeVoynichFont(this.value);">
+                          <option value="0">Voynichese</option>
+                          <option value="1">Transliterated EVA</option>
+                        </select>
+                      </div>
+                </div>
                 <div class="section folio" id=><sup>1</sup><a class="voynich-word" href="../word/toealchs.html">toealchs</a> <a class="voynich-word" href="../word/shokol.html">shokol</a> <a class="voynich-word" href="../word/sheo.html">sheo</a> <a class="voynich-word" href="../word/qoekeeysoeeol.html">qoekeeysoeeol</a> <a class="voynich-word" href="../word/qoteody.html">qoteody</a></br><sup>2</sup><a class="voynich-word" href="../word/saiin.html">saiin</a> <a class="voynich-word" href="../word/ckheo.html">ckheo</a> <a class="voynich-word" href="../word/saiin.html">saiin</a> <a class="voynich-word" href="../word/qockhey.html">qockhey</a> <a class="voynich-word" href="../word/s.html">s</a> <a class="voynich-word" href="../word/ykeeodys.html">ykeeodys</a> <a class="voynich-word" href="../word/cheey.html">cheey</a> <a class="voynich-word" href="../word/chor.html">chor</a> <a class="voynich-word" href="../word/ckhs.html">ckhs</a></br><sup>3</sup><a class="voynich-word" href="../word/dsheeor.html">dsheeor</a> <a class="voynich-word" href="../word/qokeod.html">qokeod</a> <a class="voynich-word" href="../word/qokeo.html">qokeo</a> <a class="voynich-word" href="../word/chol.html">chol</a> <a class="voynich-word" href="../word/ol.html">ol</a> <a class="voynich-word" href="../word/okalsaiin.html">okalsaiin</a> <a class="voynich-word" href="../word/ctheo.html">ctheo</a> <a class="voynich-word" href="../word/s.html">s</a> <a class="voynich-word" href="../word/ar.html">ar</a></br><sup>4</sup><a class="voynich-word" href="../word/al.html">al</a> <a class="voynich-word" href="../word/s.html">s</a> <a class="voynich-word" href="../word/ain.html">ain</a> <a class="voynich-word" href="../word/cheo.html">cheo</a> <a class="voynich-word" href="../word/ro.html">ro</a> <a class="voynich-word" href="../word/sokeey.html">sokeey</a> <a class="voynich-word" href="../word/qokeeosal.html">qokeeosal</a> <a class="voynich-word" href="../word/aral.html">aral</a> <a class="voynich-word" href="../word/oys.html">oys</a></br><sup>5</sup><a class="voynich-word" href="../word/ychor.html">ychor</a> <a class="voynich-word" href="../word/ckhor.html">ckhor</a> <a class="voynich-word" href="../word/qoeeor.html">qoeeor</a> <a class="voynich-word" href="../word/okaiin.html">okaiin</a> <a class="voynich-word" href="../word/domol.html">domol</a> <a class="voynich-word" href="../word/cheo.html">cheo</a> <a class="voynich-word" href="../word/ro.html">ro</a> <a class="voynich-word" href="../word/daiin.html">daiin</a></br><sup>6</sup><a class="voynich-word" href="../word/daiin.html">daiin</a> <a class="voynich-word" href="../word/qokor.html">qokor</a> <a class="voynich-word" href="../word/okoiin.html">okoiin</a> <a class="voynich-word" href="../word/daiin.html">daiin</a></br></div>
                 <div class="section navigation">
                     <div class="folio-navigation">

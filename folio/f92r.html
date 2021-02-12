@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="https://cdn.rawgit.com/Chalarangelo/mini.css/v3.0.1/dist/mini-default.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta charset="UTF-8">
+    <script src="../scripts/main.js"></script> 
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -23,7 +24,14 @@
     <div class="row content">
         <div class="col-sm-12 col-md-4 col-md-last col-lg-4 voynich_transliteration">
             <div class="card fluid transliteration">
-                <div class="section title"><h2>f92r</h2></div>
+                <div class="section title"><h2 class="folio-name-text">f92r</h2>
+                    <div class="custom-select">
+                        <select onchange="changeVoynichFont(this.value);">
+                          <option value="0">Voynichese</option>
+                          <option value="1">Transliterated EVA</option>
+                        </select>
+                      </div>
+                </div>
                 <div class="section folio" id=></div>
                 <div class="section navigation">
                     <div class="folio-navigation">

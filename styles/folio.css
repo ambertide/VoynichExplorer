@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'EVA';
-  src: url('eva1.ttf');
+  src: url('voynichedy.ttf');
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Playfair+Display&family=Vollkorn&display=swap');
@@ -8,6 +8,7 @@
 .voynich-word {
     text-decoration: none;
     font-family: 'EVA';
+    font-weight: bold;
 }
 
 body {
@@ -20,6 +21,19 @@ body {
 .page-content {
     flex: 1;
 }
+
+.folio sup {
+    color: grey;
+}
+
+.custom-select {
+    float: right;
+}
+
+.folio-name-text {
+    float: left;
+}
+
 .folio {
     overflow-y: scroll;
     height: 100%;
@@ -96,6 +110,7 @@ body {
 
 .voynich_text {
     font-family: EVA;
+    font-weight: bold;
 }
 
 .eva {
@@ -104,6 +119,7 @@ body {
 
 #voy_op {
     font-family: EVA;
+    font-weight: bold;
 }
 
 .display_selector {
