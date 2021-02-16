@@ -5,6 +5,33 @@ import sqlite3 as sql
 from os.path import exists
 from template_commons import footer, header, explanation_word, explanation_folio
 from pathlib import Path
+from json import load
+from warnings import warn
+
+
+class MissingImageWarning(Warning):
+    pass
+
+
+with open('equivalents.json') as fp:
+    multis = load(fp)  # Multiline equivalents.
+
+
+missing_card = r"""
+            <div class="card error large">
+                <div class="section title"><h2>Missing Image!</h2></div>
+                <div class="section explanation"><p>This image is missing! This is likely not your fault,
+                    it is extremely likely that the image is not on the server, and is an issue in our end,
+                    we are aware of the missing images and are trying hard to find them.</p>
+                </div>
+            </div>
+"""
+
+folio_image = r"""
+            <div class="folio_image">
+                <img class="voynich_folio_page" src="../media/portrait.jpg" alt="Image description"/>
+            </div>
+"""
 
 
 def replace_templates(replace_dict: Dict[str, str], template: str) -> str:
@@ -21,17 +48,6 @@ def replace_templates(replace_dict: Dict[str, str], template: str) -> str:
     return page
 
 
-def generate_folio_table_cell(folio_name: str) -> str:
-    """
-    Given a folio name, generate the HTML element it will
-        look like in the table.
-
-    :param folio_name: Name of the folio.
-    :return: The HTML tag representing folio link.
-    """
-    return f'<td><small><a href="../folio/{folio_name}.html">{folio_name}</a></small></td>'
-
-
 def generate_word_page(word: str, cursor: sql.Cursor, template: str) -> None:
     """
     Generate a word page for the given word, which shows
@@ -46,14 +62,8 @@ def generate_word_page(word: str, cursor: sql.Cursor, template: str) -> None:
     appearances = cursor.execute("SELECT folioName FROM Appears WHERE wordName = ? ORDER BY appearanceID", (word,))
     folios = [appearance[0] for appearance in appearances]
     page = page.replace("{%wordAppearanceCount%}", str(len(folios)))
-    folios = [generate_folio_table_cell(folio) for folio in folios]  # Generate table links for folios.
-    folios = [folios[i:i + 3] for i in range(0, len(folios), 3)]  # Group folios in groups of three.
-    folio_rows = [''.join(folio_row) for folio_row in folios]
-    folio_table = (" " * 14) + '<table class="folio_link_table">'
-    for folio_row in folio_rows:
-        folio_table += '<tr>' + folio_row + '</tr>'
-    folio_table += '</table>'
-    page = page.replace("{%appearances%}", folio_table)
+    folios = get_list(folios, "../folio/", ".html")
+    page = page.replace("{%appearances%}", folios)
     with open(f"word/{word}.html", "w") as page_file:
         page_file.write(page)
 
@@ -112,7 +122,14 @@ def generate_folio_page(folio_name: str, folio_paragraphs: str, template: str,
         page = page.replace("{%after%}", f'<a id="after_link" href="{folio_after}.html"><b>></b></a>')
     else:
         page = page.replace("{%after%}", "").replace('<a href="f116v.html">>></a>', "")
-    page = page.replace("portrait.jpg", f"{folio_name}.jpg")
+    image_name = folio_name + '.jpg'
+    if folio_name in multis:
+        image_name = multis[folio_name]
+    if exists(f'media/{image_name}'):
+        page = page.replace("portrait.jpg", image_name)
+    else:
+        warn(f'No image found for {folio_name}.', MissingImageWarning)
+        page = page.replace(folio_image, missing_card)  # Display an error if the image is missing.
     with open(f'folio/{folio_name}.html', 'w') as web_page:
         web_page.write(page)
 
@@ -151,27 +168,37 @@ def generate_folio_pages(db_file):
                 generate_folio_page(folio_name[0], paragraph_text, template, folio_before, folio_after)
 
 
-def get_list(list_: List[str]) -> str:
+def get_list(list_: List[str], path: str = '', extension: str = '') -> str:
     """
     Get the HTML list version of the list
         in Python.
 
     :param list_: A python list of strings.
+    :param path: Directory path prefix of the links, optional.
+        If not provided, act as if the links are in the same page.
+    :param extension: Extension to be appended to
+        the end of the file.
     :return: the HTML version of the list.
     """
     html_list = "<ul>"
-    html_list += "\n".join(['<li> <a href="' + element + '">' + element.replace(".html", "") + '</a></li>' for element in list_])
+    html_list += "\n".join(['<li> <a href="' + path + element + extension + '">'
+                            + element.replace(".html", "") + '</a></li>' for element in list_])
     html_list += "</ul>"
     return html_list
 
 
-def generate_index_pages() -> None:
+def generate_index_pages(db_file) -> None:
     """
     These pages are the index pages for the word/ and
         folio/ directories.
 
     :param db_file: Database file, of type SQLite3
     """
+    with sql.connect(db_file) as db:
+        cur = db.cursor()
+        cur.execute('SELECT folioName FROM Folio ORDER BY folioID')
+        folio_list = cur.fetchall()
+    folio_list = [folio[0] + '.html' for folio in folio_list]
     words_list = listdir("word/")
     words_list = get_list(words_list)
     with open("templates/general_index.html") as template_file:
@@ -185,7 +212,7 @@ def generate_index_pages() -> None:
         }, template)
     with open("word/index.html", "w") as word_index:
         word_index.write(word_page)
-    folio_list = get_list(listdir("folio/"))
+    folio_list = get_list(folio_list)
     folio_page = replace_templates(
         {
             "page-title": "Folio",
@@ -197,6 +224,7 @@ def generate_index_pages() -> None:
 
 
 if __name__ == '__main__':
+
     program = ArgumentParser(description="Generate a Static Webpage for Exploring the Voynich Manuscript.")
     program.add_argument("input", help="Voynich data in a SQLite3 file")
     program.add_argument("--generate_folder", "-f", action="store_true", help="Generate the necessary folders.")
@@ -206,4 +234,4 @@ if __name__ == '__main__':
             Path(path).mkdir(exist_ok=True)
     generate_folio_pages(args.input)
     generate_word_pages(args.input)
-    generate_index_pages()
+    generate_index_pages(args.input)
