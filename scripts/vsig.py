@@ -17,6 +17,18 @@ with open('equivalents.json') as fp:
     multis = load(fp)  # Multiline equivalents.
 
 
+def generate_missing_folios():
+    numbers = [12, *range(59, 65), 74, 91, 92, 97, 98, 109, 110]
+    missing_folios = []
+    for number in numbers:
+        missing_folios.extend([f"f{number}v", f"f{number}r"])
+    return missing_folios
+
+
+missing_folios = generate_missing_folios()
+print(missing_folios)
+
+
 missing_card = r"""
             <div class="card error large">
                 <div class="section title"><h2>Missing Image!</h2></div>
@@ -103,7 +115,7 @@ def generate_folio_div(paragraphs: List[str]) -> str:
 
 
 def generate_folio_page(folio_name: str, folio_paragraphs: str, template: str,
-                        folio_before: Optional[str], folio_after: Optional[str]) -> None:
+                        folio_before: Optional[str], folio_after: Optional[str], do_warn = True) -> None:
     """
     Generate a folio page from a given folio name and the paragraph of the
         Folio.
@@ -127,7 +139,7 @@ def generate_folio_page(folio_name: str, folio_paragraphs: str, template: str,
         image_name = multis[folio_name]
     if exists(f'media/{image_name}'):
         page = page.replace("portrait.jpg", image_name)
-    else:
+    elif folio_name not in missing_folios:
         warn(f'No image found for {folio_name}.', MissingImageWarning)
         page = page.replace(folio_image, missing_card)  # Display an error if the image is missing.
     with open(f'folio/{folio_name}.html', 'w') as web_page:
@@ -162,8 +174,8 @@ def generate_folio_pages(db_file):
             paragraph_text = generate_folio_div(folio_paragraphs)
             folio_before = None if i == 0 else folio_names[i - 1][0]
             folio_after = None if i == len(folio_names) - 1 else folio_names[i + 1][0]
-            if folio_name[0][1:3] in [str(f_number) for f_number in range(59, 65)]:
-                generate_folio_page(folio_name[0], paragraph_text, missing_template, folio_before, folio_after)
+            if folio_name[0] in missing_folios:
+                generate_folio_page(folio_name[0], paragraph_text, missing_template, folio_before, folio_after, False)
             else:
                 generate_folio_page(folio_name[0], paragraph_text, template, folio_before, folio_after)
 
